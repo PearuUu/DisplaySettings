@@ -90,4 +90,18 @@ mod tests {
         let result = add(2, 2);
         assert_eq!(result, 4);
     }
+
+    #[test]
+    fn GetDisplaySettingsTest(){
+        let settings = GetDisplaySettings();
+        assert_ne!(settings.len(), 0);
+    }
+
+    #[test]
+    fn SetDisplaySettingsTest(){
+        let settings = GetDisplaySettings();
+        let result = SetDisplaySettings(&settings[0]);
+
+        assert_eq!(result, 0);
+    }
 }
