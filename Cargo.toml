@@ -2,6 +2,7 @@
 name = "DisplaySettings"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 authors = ["Pearu <bartekg100@gmail.com>"]
 description = "Small library to manage display settings on Windows"
 repository = "https://github.com/PearuUu/DisplaySettings"
