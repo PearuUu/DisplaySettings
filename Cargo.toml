@@ -3,7 +3,12 @@ name = "DisplaySettings"
 version = "0.1.0"
 edition = "2021"
 authors = ["Pearu <bartekg100@gmail.com>"]
-include = ["src/**/*"]
+description = "Small library to manage display settings on Windows"
+repository = "https://github.com/PearuUu/DisplaySettings"
+readme = "README.md"
+keywords = ["Display", "windows", "Windows-settings", "winapi", "api"]
+categories = ["api-bindings", "os"]
+include = ["src/**/*", "README.md"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
