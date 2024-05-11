@@ -6,6 +6,12 @@ use std::fmt::Display;
 use std::mem::zeroed;
 use std::cmp::{PartialEq, Eq};
 
+mod types {
+    pub mod DisplaySettingsInput;
+}
+
+pub use types::DisplaySettingsInput::*;
+
 struct MyDevMode(DEVMODEW);
 impl PartialEq for MyDevMode {
     fn eq(&self, other: &Self) -> bool {
@@ -15,19 +21,12 @@ impl PartialEq for MyDevMode {
 }
 impl Eq for MyDevMode {}
 
-#[derive(Debug, PartialEq, Clone, Default)]
-pub struct DisplaySettings {
-    width: u32,
-    height: u32,
-    refresh_rate: u32
-}
-
-pub fn GetDisplaySettings() -> Vec<DisplaySettings>
+pub fn get_display_settings() -> Vec<DisplaySettingsInput>
 {
-    let mut display_settings_vec: Vec<DisplaySettings> = Vec::new();
+    let mut display_settings_vec: Vec<DisplaySettingsInput> = Vec::new();
 
-    GetDisplaySettingsCore().iter().for_each(|setting| {
-        display_settings_vec.push(DisplaySettings {
+    get_display_settings_core().iter().for_each(|setting| {
+        display_settings_vec.push(DisplaySettingsInput {
             width: setting.dmPelsWidth,
             height: setting.dmPelsHeight,
             refresh_rate: setting.dmDisplayFrequency
@@ -37,7 +36,7 @@ pub fn GetDisplaySettings() -> Vec<DisplaySettings>
     return display_settings_vec;
 }
 
-fn GetDisplaySettingsCore() -> Vec<DEVMODEW>
+fn get_display_settings_core() -> Vec<DEVMODEW>
 {
     let mut display_settings_vec: Vec<DEVMODEW> = Vec::new();
 
@@ -45,7 +44,7 @@ fn GetDisplaySettingsCore() -> Vec<DEVMODEW>
     unsafe {
         let mut dev_mode = DEVMODEW {
             dmSize: std::mem::size_of::<DEVMODEW>() as u16,
-            ..std::mem::zeroed()
+            ..zeroed()
         };
 
         let mut index = 0;
@@ -56,7 +55,7 @@ fn GetDisplaySettingsCore() -> Vec<DEVMODEW>
                 break;
             }
 
-            if (MyDevMode(prev_setting) != MyDevMode(dev_mode)) {
+            if MyDevMode(prev_setting) != MyDevMode(dev_mode) {
                 prev_setting = dev_mode.clone();
                 display_settings_vec.push(dev_mode);
             }
@@ -77,12 +76,12 @@ fn GetDisplaySettingsCore() -> Vec<DEVMODEW>
     return display_settings_vec;
 }
 
-fn GetDevModeW() -> DEVMODEW
+fn get_dev_mode_w() -> DEVMODEW
 {
     unsafe{
         let mut dev_mode = DEVMODEW {
             dmSize: std::mem::size_of::<DEVMODEW>() as u16,
-            ..std::mem::zeroed()
+            ..zeroed()
         };
 
         EnumDisplaySettingsW(ptr::null(), 0, &mut dev_mode);
@@ -93,20 +92,20 @@ fn GetDevModeW() -> DEVMODEW
 
 }
 
-pub fn SetDisplaySettings(settings: DisplaySettings) -> LONG
+pub fn set_display_settings(settings: DisplaySettingsInput) -> LONG
 {
-    let mut dev_mode = GetDevModeW();
+    let mut dev_mode = get_dev_mode_w();
 
     dev_mode.dmPelsWidth = settings.width;
     dev_mode.dmPelsHeight = settings.height;
     dev_mode.dmDisplayFrequency = settings.refresh_rate;
 
-    let result = SetDisplaySettingsCore(&dev_mode);
+    let result = set_display_settings_core(&dev_mode);
 
     return result;
 }
 
-fn SetDisplaySettingsCore(settings: &DEVMODEW) -> LONG
+fn set_display_settings_core(settings: &DEVMODEW) -> LONG
 {
     use winapi::um::winuser::{ChangeDisplaySettingsW};
 
@@ -114,7 +113,7 @@ fn SetDisplaySettingsCore(settings: &DEVMODEW) -> LONG
         let mut dev_mode: DEVMODEW = *settings;
 
         let result = ChangeDisplaySettingsW(&mut dev_mode, CDS_GLOBAL | CDS_UPDATEREGISTRY);
-        if (result == DISP_CHANGE_SUCCESSFUL)
+        if result == DISP_CHANGE_SUCCESSFUL
         {
             println!("Success");
             println!("{}", result)
@@ -131,21 +130,21 @@ mod tests {
     use super::*;
 
     #[test]
-    fn GetDisplaySettingsTest(){
-        let settings = GetDisplaySettings();
+    fn get_display_settings_test(){
+        let settings = get_display_settings();
         assert_ne!(settings.len(), 0);
     }
 
     #[test]
-    fn SetDisplaySettingsTest(){
+    fn set_display_settings_test(){
         // let settings = DisplaySettings {
         //     width: 1920,
         //     height: 1080,
         //     refresh_rate: 60
         // };
-        let settings = GetDisplaySettings();
-        let mut setting = settings[0].clone();
-        let result = SetDisplaySettings(setting);
+        let settings = get_display_settings();
+        let setting = settings[0].clone();
+        let result = set_display_settings(setting);
 
         assert_eq!(result, 0);
     }
