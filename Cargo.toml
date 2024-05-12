@@ -1,11 +1,12 @@
 [package]
 name = "DisplaySettings"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 authors = ["Pearu <bartekg100@gmail.com>"]
 description = "Small library to manage display settings on Windows with rust"
 repository = "https://github.com/PearuUu/DisplaySettings"
+documentation = "https://docs.rs/DisplaySettings"
 readme = "README.md"
 keywords = ["Display", "windows", "Windows-settings", "winapi", "api"]
 categories = ["api-bindings", "os"]
