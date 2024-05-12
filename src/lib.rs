@@ -6,10 +6,10 @@ use std::mem::zeroed;
 use std::cmp::{PartialEq, Eq};
 
 mod types {
-    pub mod DisplaySettingsInput;
+    pub mod DisplaySettingsType;
 }
 
-pub use types::DisplaySettingsInput::*;
+pub use types::DisplaySettingsType::*;
 
 struct MyDevMode(DEVMODEW);
 impl PartialEq for MyDevMode {
@@ -20,12 +20,12 @@ impl PartialEq for MyDevMode {
 }
 impl Eq for MyDevMode {}
 
-pub fn get_display_settings() -> Vec<DisplaySettingsInput>
+pub fn get_display_settings() -> Vec<DisplaySettingsType>
 {
-    let mut display_settings_vec: Vec<DisplaySettingsInput> = Vec::new();
+    let mut display_settings_vec: Vec<DisplaySettingsType> = Vec::new();
 
     get_display_settings_core().iter().for_each(|setting| {
-        display_settings_vec.push(DisplaySettingsInput {
+        display_settings_vec.push(DisplaySettingsType {
             width: setting.dmPelsWidth,
             height: setting.dmPelsHeight,
             refresh_rate: setting.dmDisplayFrequency
@@ -91,7 +91,7 @@ fn get_dev_mode_w() -> DEVMODEW
 
 }
 
-pub fn set_display_settings(settings: DisplaySettingsInput) -> LONG
+pub fn set_display_settings(settings: DisplaySettingsType) -> LONG
 {
     let mut dev_mode = get_dev_mode_w();
 
