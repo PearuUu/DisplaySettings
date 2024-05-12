@@ -2,7 +2,6 @@ use std::ptr;
 use winapi::um::winuser::{CDS_GLOBAL, CDS_UPDATEREGISTRY, DISP_CHANGE_SUCCESSFUL, EnumDisplaySettingsW};
 use winapi::um::wingdi::{DEVMODEW};
 use winapi::um::winnt::{LONG};
-use std::fmt::Display;
 use std::mem::zeroed;
 use std::cmp::{PartialEq, Eq};
 
