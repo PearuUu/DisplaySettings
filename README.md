@@ -114,10 +114,10 @@ fn main() {
 ```
 
 ```rust
-use DisplaySettings::{set_display_settings, DisplaySettingsInput};
+use DisplaySettings::{set_display_settings, DisplaySettingsType};
 
 fn main() {
-    let settings = DisplaySettingsInput {
+    let settings = DisplaySettingsType {
         width: 1920,
         height: 1080,
         refresh_rate: 60,
@@ -132,7 +132,7 @@ fn main() {
 }
 
 ```
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://docs.rs/crate/DisplaySettings/latest)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
